@@ -142,7 +142,7 @@ function WeddingCardContent() {
             <div className="mb-9 flex items-end gap-4 sm:gap-5">
               <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">01</span>
               <div className="pb-1">
-                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#6e0e12]">GROOM &amp; BRIDE</p>
+                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#000]">GROOM &amp; BRIDE</p>
                 <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Chú Rể &amp; Cô Dâu</h2>
               </div>
               <span className="h-px flex-1 bg-[#E2D7C5] mb-2" />
@@ -161,11 +161,11 @@ function WeddingCardContent() {
                   </div>
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-[0.7rem] uppercase tracking-widest text-[#6e0e12]">CHÚ RỂ</p>
+                  <p className="text-[0.7rem] uppercase tracking-widest text-[#000]">CHÚ RỂ</p>
                   <h3 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">
                     {weddingData.couple.groom.fullName}
                   </h3>
-                  <p className="mt-2 text-xs italic text-[#6e0e12] leading-relaxed">
+                  <p className="mt-2 text-xs italic text-[#000] leading-relaxed">
                     "Thật may mắn vì trong biển người mênh mông, anh đã tìm thấy em."
                   </p>
                 </div>
@@ -183,11 +183,11 @@ function WeddingCardContent() {
                   </div>
                 </div>
                 <div className="flex-1 text-right">
-                  <p className="text-[0.7rem] uppercase tracking-widest text-[#6e0e12]">CÔ DÂU</p>
+                  <p className="text-[0.7rem] uppercase tracking-widest text-[#000]">CÔ DÂU</p>
                   <h3 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">
                     {weddingData.couple.bride.fullName}
                   </h3>
-                  <p className="mt-2 text-xs italic text-[#6e0e12] leading-relaxed">
+                  <p className="mt-2 text-xs italic text-[#000] leading-relaxed">
                     "Cảm ơn anh vì đã luôn yêu thương và trân trọng em mỗi ngày."
                   </p>
                 </div>
@@ -200,7 +200,7 @@ function WeddingCardContent() {
             <div className="mb-9 flex items-end gap-4 sm:gap-5">
               <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">02</span>
               <div className="pb-1">
-                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#6e0e12]">PARENTS</p>
+                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#000]">PARENTS</p>
                 <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Hai Bên Gia Đình</h2>
               </div>
               <span className="h-px flex-1 bg-[#C9B79C] mb-2" />
@@ -208,21 +208,21 @@ function WeddingCardContent() {
 
             <div className="grid grid-cols-2 gap-4 text-center">
               <div className="border-r border-[#C9B79C]/50 pr-3">
-                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#6e0e12]">Nhà Trai</p>
+                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#000]">Nhà Trai</p>
                 <div className="mt-4 space-y-1">
-                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.groom.fatherName}</p>
-                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.groom.motherName}</p>
+                  <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.groom.fatherName}</p>
+                  <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.groom.motherName}</p>
                 </div>
-                <p className="mt-4 text-[0.78rem] italic text-[#6e0e12]">{weddingData.families.groom.address}</p>
+                <p className="mt-4 text-[0.78rem] italic text-[#000]/60">{weddingData.families.groom.address}</p>
               </div>
 
               <div className="pl-3">
-                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#6e0e12]">Nhà Gái</p>
+                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#000]">Nhà Gái</p>
                 <div className="mt-4 space-y-1">
-                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.bride.fatherName}</p>
-                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.bride.motherName}</p>
+                  <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.bride.fatherName}</p>
+                  <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.bride.motherName}</p>
                 </div>
-                <p className="mt-4 text-[0.78rem] italic text-[#6e0e12]">{weddingData.families.bride.address}</p>
+                <p className="mt-4 text-[0.78rem] italic text-[#000]/60">{weddingData.families.bride.address}</p>
               </div>
             </div>
           </section>
@@ -336,7 +336,7 @@ function WeddingCardContent() {
             <div className="mb-9 flex items-end gap-4 sm:gap-5">
               <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">03</span>
               <div className="pb-1">
-                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#6e0e12]">GALLERY</p>
+                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#000]">GALLERY</p>
                 <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Album Kỷ Niệm</h2>
               </div>
               <span className="h-px flex-1 bg-[#C9B79C] mb-2" />
@@ -359,7 +359,7 @@ function WeddingCardContent() {
           <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-24">
             <div className="text-center">
               <h2 className="si-display text-[2rem] font-medium text-[#6e0e12]">Sổ Lưu Bút</h2>
-              <p className="mt-1 text-sm italic text-[#6e0e12]">
+              <p className="mt-1 text-sm italic text-[#000]">
                 Gửi những lời chúc tốt đẹp nhất dành cho cặp đôi
               </p>
             </div>
@@ -393,10 +393,10 @@ function WeddingCardContent() {
               {guestbook.map((item, index) => (
                 <div key={index} className="rounded-lg bg-[#F1EADD]/60 p-4 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-[#6e0e12]">{item.name}</p>
-                    <span className="text-[0.7rem] text-[#6e0e12]">{item.time}</span>
+                    <p className="font-semibold text-[#000]">{item.name}</p>
+                    <span className="text-[0.7rem] text-[#000]">{item.time}</span>
                   </div>
-                  <p className="mt-2 text-sm italic text-[#6e0e12]">"{item.content}"</p>
+                  <p className="mt-2 text-sm italic text-[#000]">"{item.content}"</p>
                 </div>
               ))}
             </div>
@@ -419,7 +419,7 @@ function WeddingCardContent() {
                   name: (weddingData.gifts[1].accountName),
                   bankName: (weddingData.gifts[1].bankName),
                   accountNumber: (weddingData.gifts[1].accountNumber),
-                  qrImageUrl: "/images/red-color.jpg",
+                  qrImageUrl: "/images/qr-codau.jpg",
                 }}
               />
             </div>
@@ -430,7 +430,7 @@ function WeddingCardContent() {
           <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-24">
             <div className="text-center">
               <h2 className="si-display text-[2rem] font-medium text-[#6e0e12]">Xác Nhận Tham Dự</h2>
-              <p className="mt-1 text-sm italic text-[#6e0e12]">Vui lòng phản hồi trước ngày 10/12/2026</p>
+              <p className="mt-1 text-sm italic text-[#000]">Vui lòng phản hồi trước ngày 10/12/2026</p>
             </div>
 
             {rsvpSubmitted ? (
