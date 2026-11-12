@@ -2,8 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Minh Quân & Thu Hà · Thiệp Cưới Online',
-  description: 'Trân trọng kính mời bạn đến chung vui cùng Minh Quân & Thu Hà.',
+  title: 'Quốc Trịnh & Thị Vân · Thiệp Cưới Online',
+  description: 'Trân trọng kính mời bạn đến chung vui cùng Quốc Trịnh & Thị Vân.',
 };
 
 export default function RootLayout({

@@ -61,7 +61,7 @@ function WeddingCardContent() {
   const mapUrl = new URL("https://google.com");
   mapUrl.pathname = "/maps/search/";
   mapUrl.searchParams.append("api", "1");
-  mapUrl.searchParams.append("query", weddingData.events.groomParty.destination);
+  mapUrl.searchParams.append("query", weddingData.events.groomParty.address);
 
   return (
     <main className="relative min-h-screen w-full bg-[#FBF8F2] overflow-x-hidden">
@@ -75,8 +75,8 @@ function WeddingCardContent() {
         <div className="relative mx-auto h-full w-full overflow-hidden shadow-2xl">
           {/* Ảnh nền */}
           <img
-            src={weddingData.couple.coverPhoto}
-            alt="Minh Quân & Thu Hà"
+            src="/images/1Q9A1295.JPG"
+            alt="Quốc Trịnh & Thị Vân"
             className="absolute inset-0 h-full w-full object-cover object-center scale-105 transition-transform duration-1000"
           />
           
@@ -110,13 +110,13 @@ function WeddingCardContent() {
 
             <div className="mt-7 text-center">
               <p className="si-display text-[1.55rem] font-medium tracking-[0.13em] text-white sm:text-[1.85rem]">
-                07 . 02 . 2027
+                12 . 12 . 2026
               </p>
               <p className="mt-1 text-[0.62rem] uppercase tracking-widest text-white/80">
-                CHỦ NHẬT
+                THỨ 7
               </p>
               <p className="si-display mt-1 text-[0.86rem] italic text-white/90">
-                Tức ngày 01 tháng 01 năm Đinh Mùi
+                Tức ngày 04 tháng 11 năm Bính Ngọ
               </p>
             </div>
 
@@ -140,10 +140,10 @@ function WeddingCardContent() {
           {/* SECTION 01: CÔ DÂU & CHÚ RỂ */}
           <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-24">
             <div className="mb-9 flex items-end gap-4 sm:gap-5">
-              <span className="si-display text-[3.2rem] font-medium leading-none text-[#E2D7C5]">01</span>
+              <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">01</span>
               <div className="pb-1">
-                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#9C8463]">GROOM &amp; BRIDE</p>
-                <h2 className="si-display text-[1.8rem] font-medium text-[#4A4039]">Chú Rể &amp; Cô Dâu</h2>
+                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#6e0e12]">GROOM &amp; BRIDE</p>
+                <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Chú Rể &amp; Cô Dâu</h2>
               </div>
               <span className="h-px flex-1 bg-[#E2D7C5] mb-2" />
             </div>
@@ -161,11 +161,11 @@ function WeddingCardContent() {
                   </div>
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-[0.7rem] uppercase tracking-widest text-[#9C8463]">CHÚ RỂ</p>
-                  <h3 className="si-display text-[1.8rem] font-medium text-[#9C8463]">
+                  <p className="text-[0.7rem] uppercase tracking-widest text-[#6e0e12]">CHÚ RỂ</p>
+                  <h3 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">
                     {weddingData.couple.groom.fullName}
                   </h3>
-                  <p className="mt-2 text-xs italic text-[#6E6359] leading-relaxed">
+                  <p className="mt-2 text-xs italic text-[#6e0e12] leading-relaxed">
                     "Thật may mắn vì trong biển người mênh mông, anh đã tìm thấy em."
                   </p>
                 </div>
@@ -183,11 +183,11 @@ function WeddingCardContent() {
                   </div>
                 </div>
                 <div className="flex-1 text-right">
-                  <p className="text-[0.7rem] uppercase tracking-widest text-[#9C8463]">CÔ DÂU</p>
-                  <h3 className="si-display text-[1.8rem] font-medium text-[#9C8463]">
+                  <p className="text-[0.7rem] uppercase tracking-widest text-[#6e0e12]">CÔ DÂU</p>
+                  <h3 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">
                     {weddingData.couple.bride.fullName}
                   </h3>
-                  <p className="mt-2 text-xs italic text-[#6E6359] leading-relaxed">
+                  <p className="mt-2 text-xs italic text-[#6e0e12] leading-relaxed">
                     "Cảm ơn anh vì đã luôn yêu thương và trân trọng em mỗi ngày."
                   </p>
                 </div>
@@ -198,31 +198,31 @@ function WeddingCardContent() {
           {/* SECTION 02: HAI BÊN GIA ĐÌNH */}
           <section className="relative overflow-hidden bg-[#F1EADD] px-5 py-16 sm:px-6 sm:py-24">
             <div className="mb-9 flex items-end gap-4 sm:gap-5">
-              <span className="si-display text-[3.2rem] font-medium leading-none text-[#C9B79C]">02</span>
+              <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">02</span>
               <div className="pb-1">
-                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#9C8463]">PARENTS</p>
-                <h2 className="si-display text-[1.8rem] font-medium text-[#4A4039]">Hai Bên Gia Đình</h2>
+                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#6e0e12]">PARENTS</p>
+                <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Hai Bên Gia Đình</h2>
               </div>
               <span className="h-px flex-1 bg-[#C9B79C] mb-2" />
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-center">
               <div className="border-r border-[#C9B79C]/50 pr-3">
-                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#9C8463]">Nhà Trai</p>
+                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#6e0e12]">Nhà Trai</p>
                 <div className="mt-4 space-y-1">
-                  <p className="si-display text-[1.8rem] font-medium text-[#4A4039]">{weddingData.families.groom.fatherName}</p>
-                  <p className="si-display text-[1.8rem] font-medium text-[#4A4039]">{weddingData.families.groom.motherName}</p>
+                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.groom.fatherName}</p>
+                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.groom.motherName}</p>
                 </div>
-                <p className="mt-4 text-[0.78rem] italic text-[#6E6359]">{weddingData.families.groom.address}</p>
+                <p className="mt-4 text-[0.78rem] italic text-[#6e0e12]">{weddingData.families.groom.address}</p>
               </div>
 
               <div className="pl-3">
-                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#9C8463]">Nhà Gái</p>
+                <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#6e0e12]">Nhà Gái</p>
                 <div className="mt-4 space-y-1">
-                  <p className="si-display text-[1.8rem] font-medium text-[#4A4039]">{weddingData.families.bride.fatherName}</p>
-                  <p className="si-display text-[1.8rem] font-medium text-[#4A4039]">{weddingData.families.bride.motherName}</p>
+                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.bride.fatherName}</p>
+                  <p className="si-display text-[1.8rem] font-medium text-[#6e0e12]">{weddingData.families.bride.motherName}</p>
                 </div>
-                <p className="mt-4 text-[0.78rem] italic text-[#6E6359]">{weddingData.families.bride.address}</p>
+                <p className="mt-4 text-[0.78rem] italic text-[#6e0e12]">{weddingData.families.bride.address}</p>
               </div>
             </div>
           </section>
@@ -230,7 +230,7 @@ function WeddingCardContent() {
           {/* SECTION LỜI MỜI */}
           <section className="relative overflow-hidden bg-[#FBF8F2] px-6 py-16 text-center sm:py-20">
             {/* Họa tiết SVG cành lá */}
-            <div className="mb-6 flex justify-center text-[#C2A26A]/70" aria-hidden="true">
+            <div className="mb-6 flex justify-center text-[#6e0e12]" aria-hidden="true">
               <svg width="120" height="24" viewBox="0 0 120 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
                 <path d="M 10 18 Q 40 6, 60 12 Q 80 18, 110 6" />
                 <path d="M 35 12 Q 38 6, 44 6 Q 40 12, 35 12 Z" />
@@ -241,24 +241,24 @@ function WeddingCardContent() {
             {/* SECTION LỄ THÀNH HÔN */}
             <div>
               <div className="space-y-1">
-                <p className="text-[0.88rem] uppercase tracking-[0.22em] text-[#4A4039]/80 sm:text-[0.74rem]">
+                <p className="text-[0.88rem] uppercase tracking-[0.22em] text-[#6e0e12] sm:text-[0.74rem]">
                   TRÂN TRỌNG BÁO TIN LỄ THÀNH HÔN CỦA CON CHÚNG TÔI
                 </p>
               </div>
 
               {/* Khối Tên Chú Rể & Cô Dâu Calligraphy */}
               <div className="my-8 space-y-2">
-                <h2 className="font-calligraphy text-[3.2rem] font-normal leading-tight text-[#9C8463] sm:text-[4.2rem]">
+                <h2 className="font-calligraphy text-[3.2rem] font-normal leading-tight text-[#6e0e12] sm:text-[4.2rem]">
                   {weddingData.couple.groom.fullName}
                 </h2>
 
-                <div className="flex items-center justify-center gap-3 text-[#C2A26A]/70">
+                <div className="flex items-center justify-center gap-3 text-[#6e0e12]">
                   <svg width="32" height="12" viewBox="0 0 32 12" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
                     <path d="M 2 8 Q 12 2, 30 6" />
                     <path d="M 12 6 Q 14 2, 18 2 Q 15 6, 12 6 Z" />
                   </svg>
 
-                  <span className="font-calligraphy text-2xl italic text-[#9C8463]">&amp;</span>
+                  <span className="font-calligraphy text-2xl italic text-[#6e0e12]">&amp;</span>
 
                   <svg width="32" height="12" viewBox="0 0 32 12" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" className="scale-x-[-1]">
                     <path d="M 2 8 Q 12 2, 30 6" />
@@ -266,31 +266,31 @@ function WeddingCardContent() {
                   </svg>
                 </div>
 
-                <h2 className="font-calligraphy text-[3.2rem] font-normal leading-tight text-[#9C8463] sm:text-[4.2rem]">
+                <h2 className="font-calligraphy text-[3.2rem] font-normal leading-tight text-[#6e0e12] sm:text-[4.2rem]">
                   {weddingData.couple.bride.fullName}
                 </h2>
               </div>
 
               {/* Thông tin Địa điểm */}
               <div className="mt-4">
-                <p className="text-[0.66rem] uppercase tracking-[0.2em] text-[#9C8463] sm:text-[0.72rem]">
+                <p className="text-[0.66rem] uppercase tracking-[0.2em] text-[#6e0e12] sm:text-[0.72rem]">
                   HÔN LỄ ĐƯỢC CỬ HÀNH TRANG TRỌNG TẠI
                 </p>
-                <h3 className="si-display mt-3 text-xl font-semibold uppercase tracking-wider text-[#4A4039] sm:text-2xl">
+                <h3 className="si-display mt-3 text-xl font-semibold uppercase tracking-wider text-[#6e0e12] sm:text-2xl">
                   {weddingData.events.ceremony.venue}
                 </h3>
-                <p className="mt-1 text-sm italic text-[#6E6359]">{weddingData.events.ceremony.address}</p>
-                <p className="mt-3 text-xs font-semibold tracking-wider text-[#4A4039]">
+                <p className="mt-1 text-sm italic text-[#6e0e12]">{weddingData.events.ceremony.address}</p>
+                <p className="mt-3 text-xs font-semibold tracking-wider text-[#6e0e12]">
                   VÀO LÚC {weddingData.events.ceremony.time} · {weddingData.events.ceremony.dayOfWeek}
                 </p>
-                <p className="si-display mt-1 text-2xl font-semibold text-[#9C8463]">{weddingData.events.ceremony.date}</p>
-                <p className="mt-1 text-xs italic text-[#9E9388]">({weddingData.events.ceremony.lunar})</p>
+                <p className="si-display mt-1 text-2xl font-semibold text-[#6e0e12]">{weddingData.events.ceremony.date}</p>
+                <p className="mt-1 text-xs italic text-[#6e0e12]">({weddingData.events.ceremony.lunar})</p>
               </div>
             </div>
 
             {/* SECTION TIỆC */}
             {/* Họa tiết Mái Vòm */}
-            <div className="mt-12 flex justify-center text-[#C2A26A]/80" aria-hidden="true">
+            <div className="mt-12 flex justify-center text-[#6e0e12]" aria-hidden="true">
               <svg width="100" height="24" viewBox="0 0 100 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
                 <path d="M 10 22 Q 50 -2, 90 22" />
                 <path d="M 22 22 Q 50 6, 78 22" />
@@ -300,26 +300,26 @@ function WeddingCardContent() {
 
             {/* Thông tin Địa điểm */}
             <div className="mt-4">
-              <p className="text-[0.88rem] uppercase tracking-[0.22em] text-[#4A4039]/80 sm:text-[0.74rem]">
-                TRÂN TRỌNG KÍNH MỜI <span className="font-semibold text-[#9C8463]">{guestName.toUpperCase()}</span> ĐẾN THAM DỰ:
+              <p className="text-[0.88rem] uppercase tracking-[0.22em] text-[#6e0e12] sm:text-[0.74rem]">
+                TRÂN TRỌNG KÍNH MỜI <span className="font-semibold text-[#6e0e12]">{guestName.toUpperCase()}</span> ĐẾN THAM DỰ:
               </p>
-              <p className="text-[0.66rem] uppercase tracking-[0.2em] text-[#9C8463] sm:text-[0.72rem]">
+              <p className="text-[0.66rem] uppercase tracking-[0.2em] text-[#6e0e12] sm:text-[0.72rem]">
                 TIỆC MỪNG LỄ THÀNH HÔN
               </p>
-              <h3 className="si-display mt-3 text-xl font-semibold uppercase tracking-wider text-[#4A4039] sm:text-2xl">
-                {weddingData.events.ceremony.venue}
+              <h3 className="si-display mt-3 text-xl font-semibold uppercase tracking-wider text-[#6e0e12] sm:text-2xl">
+                {weddingData.events.groomParty.venue}
               </h3>
-              <p className="mt-1 text-sm italic text-[#6E6359]">{weddingData.events.ceremony.address}</p>
-              <p className="mt-3 text-xs font-semibold tracking-wider text-[#4A4039]">
-                VÀO LÚC {weddingData.events.ceremony.time} · {weddingData.events.ceremony.dayOfWeek}
+              <p className="mt-1 text-sm italic text-[#6e0e12]">{weddingData.events.groomParty.address}</p>
+              <p className="mt-3 text-xs font-semibold tracking-wider text-[#6e0e12]">
+                VÀO LÚC {weddingData.events.groomParty.time} · {weddingData.events.groomParty.dayOfWeek}
               </p>
-              <p className="si-display mt-1 text-2xl font-semibold text-[#9C8463]">{weddingData.events.ceremony.date}</p>
-              <p className="mt-1 text-xs italic text-[#9E9388]">({weddingData.events.ceremony.lunar})</p>
+              <p className="si-display mt-1 text-2xl font-semibold text-[#6e0e12]">{weddingData.events.groomParty.date}</p>
+              <p className="mt-1 text-xs italic text-[#6e0e12]">({weddingData.events.groomParty.lunar})</p>
               <a
                 href={mapUrl.toString()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#F1EADD] border-[#9E9388] border-2 font-medium rounded-lg hover:bg-white transition-colors mt-4"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#F1EADD] border-[#6e0e12] border-2 font-medium rounded-lg hover:bg-white transition-colors mt-4 text-[#6e0e12] text-sm sm:text-base"
               >
                 {/* Icon bản đồ đơn giản */}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -334,10 +334,10 @@ function WeddingCardContent() {
           {/* SECTION 04: ALBUM ĐÁM CƯỚI */}
           <section className="relative overflow-hidden bg-[#F1EADD] px-5 py-16 sm:px-6 sm:py-24">
             <div className="mb-9 flex items-end gap-4 sm:gap-5">
-              <span className="si-display text-[3.2rem] font-medium leading-none text-[#C9B79C]">03</span>
+              <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">03</span>
               <div className="pb-1">
-                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#9C8463]">GALLERY</p>
-                <h2 className="si-display text-[1.8rem] font-medium text-[#4A4039]">Album Kỷ Niệm</h2>
+                <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#6e0e12]">GALLERY</p>
+                <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Album Kỷ Niệm</h2>
               </div>
               <span className="h-px flex-1 bg-[#C9B79C] mb-2" />
             </div>
@@ -358,8 +358,8 @@ function WeddingCardContent() {
           {/* SECTION 05: SỔ LƯU BÚT */}
           <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-24">
             <div className="text-center">
-              <h2 className="si-display text-[2rem] font-medium text-[#4A4039]">Sổ Lưu Bút</h2>
-              <p className="mt-1 text-sm italic text-[#6E6359]">
+              <h2 className="si-display text-[2rem] font-medium text-[#6e0e12]">Sổ Lưu Bút</h2>
+              <p className="mt-1 text-sm italic text-[#6e0e12]">
                 Gửi những lời chúc tốt đẹp nhất dành cho cặp đôi
               </p>
             </div>
@@ -370,7 +370,7 @@ function WeddingCardContent() {
                 placeholder="Tên của bạn"
                 value={guestbookName}
                 onChange={(e) => setGuestbookName(e.target.value)}
-                className="w-full rounded-lg border border-[#B49A7E]/40 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#9C8463]"
+                className="w-full rounded-lg border border-[#B49A7E]/40 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#6e0e12]"
                 required
               />
               <textarea
@@ -378,12 +378,12 @@ function WeddingCardContent() {
                 rows={4}
                 value={wishes}
                 onChange={(e) => setWishes(e.target.value)}
-                className="w-full rounded-lg border border-[#B49A7E]/40 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#9C8463]"
+                className="w-full rounded-lg border border-[#B49A7E]/40 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#6e0e12]"
                 required
               />
               <button
                 type="submit"
-                className="w-full rounded-full bg-[#4A4039] py-3 text-xs font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
+                className="w-full rounded-full bg-[#6e0e12] py-3 text-xs font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
               >
                 Gửi Lời Chúc
               </button>
@@ -393,10 +393,10 @@ function WeddingCardContent() {
               {guestbook.map((item, index) => (
                 <div key={index} className="rounded-lg bg-[#F1EADD]/60 p-4 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-[#4A4039]">{item.name}</p>
-                    <span className="text-[0.7rem] text-[#9E9388]">{item.time}</span>
+                    <p className="font-semibold text-[#6e0e12]">{item.name}</p>
+                    <span className="text-[0.7rem] text-[#6e0e12]">{item.time}</span>
                   </div>
-                  <p className="mt-2 text-sm italic text-[#6E6359]">"{item.content}"</p>
+                  <p className="mt-2 text-sm italic text-[#6e0e12]">"{item.content}"</p>
                 </div>
               ))}
             </div>
@@ -408,18 +408,18 @@ function WeddingCardContent() {
               <WeddingGiftModal
                 buttonImageUrl="/images/gift-box.png"
                 groomBank={{
-                  role: "Mừng cưới Chú Rể",
-                  name: "NGUYỄN VĂN A",
-                  bankName: "Vietcombank",
-                  accountNumber: "0123456789",
-                  qrImageUrl: "/images/qr-chure.png",
+                  role: (weddingData.gifts[0].title),
+                  name: (weddingData.gifts[0].accountName),
+                  bankName: (weddingData.gifts[0].bankName),
+                  accountNumber: (weddingData.gifts[0].accountNumber),
+                  qrImageUrl: "/images/qr-chure.jpg",
                 }}
                 brideBank={{
-                  role: "Mừng cưới Cô Dâu",
-                  name: "TRẦN THỊ B",
-                  bankName: "Techcombank",
-                  accountNumber: "9876543210",
-                  qrImageUrl: "/images/qr-codau.png",
+                  role: (weddingData.gifts[1].title),
+                  name: (weddingData.gifts[1].accountName),
+                  bankName: (weddingData.gifts[1].bankName),
+                  accountNumber: (weddingData.gifts[1].accountNumber),
+                  qrImageUrl: "/images/red-color.jpg",
                 }}
               />
             </div>
@@ -429,8 +429,8 @@ function WeddingCardContent() {
           {/* SECTION 07: RSVP */}
           <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-24">
             <div className="text-center">
-              <h2 className="si-display text-[2rem] font-medium text-[#4A4039]">Xác Nhận Tham Dự</h2>
-              <p className="mt-1 text-sm italic text-[#6E6359]">Vui lòng phản hồi trước ngày 01/02/2027</p>
+              <h2 className="si-display text-[2rem] font-medium text-[#6e0e12]">Xác Nhận Tham Dự</h2>
+              <p className="mt-1 text-sm italic text-[#6e0e12]">Vui lòng phản hồi trước ngày 10/12/2026</p>
             </div>
 
             {rsvpSubmitted ? (
@@ -443,7 +443,7 @@ function WeddingCardContent() {
                   type="text"
                   placeholder="Họ và tên quý khách"
                   defaultValue={guestName !== 'Quý Khách' ? guestName : ''}
-                  className="w-full rounded-lg border border-[#B49A7E]/40 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#9C8463]"
+                  className="w-full rounded-lg border border-[#B49A7E]/40 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#6e0e12]"
                   required
                 />
                 <div className="flex gap-4">
@@ -452,8 +452,8 @@ function WeddingCardContent() {
                     onClick={() => setRsvpStatus('attending')}
                     className={`flex-1 rounded-lg border py-3 text-xs font-semibold uppercase tracking-wider ${
                       rsvpStatus === 'attending'
-                        ? 'border-[#9C8463] bg-[#9C8463] text-white'
-                        : 'border-[#B49A7E]/40 bg-white text-[#4A4039]'
+                        ? 'border-[#6e0e12] bg-[#6e0e12] text-white'
+                        : 'border-[#B49A7E]/40 bg-white text-[#6e0e12]'
                     }`}
                   >
                     Sẽ Tham Dự
@@ -463,8 +463,8 @@ function WeddingCardContent() {
                     onClick={() => setRsvpStatus('not_attending')}
                     className={`flex-1 rounded-lg border py-3 text-xs font-semibold uppercase tracking-wider ${
                       rsvpStatus === 'not_attending'
-                        ? 'border-[#4A4039] bg-[#4A4039] text-white'
-                        : 'border-[#B49A7E]/40 bg-white text-[#4A4039]'
+                        ? 'border-[#6e0e12] bg-[#6e0e12] text-white'
+                        : 'border-[#B49A7E]/40 bg-white text-[#6e0e12]'
                     }`}
                   >
                     Rất Tiếc Không Thể
@@ -473,7 +473,7 @@ function WeddingCardContent() {
                 <button
                   type="submit"
                   disabled={!rsvpStatus}
-                  className="w-full rounded-full bg-[#4A4039] py-3 text-xs font-semibold uppercase tracking-widest text-white disabled:opacity-50"
+                  className="w-full rounded-full bg-[#6e0e12] py-3 text-xs font-semibold uppercase tracking-widest text-white disabled:opacity-50"
                 >
                   Xác Nhận
                 </button>
@@ -483,10 +483,10 @@ function WeddingCardContent() {
 
           {/* Footer */}
           <footer className="bg-[#F1EADD] py-12 text-center">
-            <p className="font-calligraphy text-3xl text-[#9C8463]">
+            <p className="font-calligraphy text-3xl text-[#6e0e12]">
               {weddingData.couple.groom.shortName} &amp; {weddingData.couple.bride.shortName}
             </p>
-            <p className="mt-2 text-xs text-[#9E9388]">Thank you for celebrating with us!</p>
+            <p className="mt-2 text-xs text-[#6e0e12]">Thank you for celebrating with us!</p>
           </footer>
 
         </div>
@@ -499,7 +499,7 @@ function WeddingCardContent() {
 
 export default function Home() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#FBF8F2] text-[#9C8463]">Đang tải thiệp cưới...</div>}>
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#FBF8F2] text-[#6e0e12]">Đang tải thiệp cưới...</div>}>
       <WeddingCardContent />
     </Suspense>
   );
