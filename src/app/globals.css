@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --t-bg: #FBF8F2;
+  --t-bg-warm: #F1EADD;
+  --t-ink: #4A4039;
+  --t-ink-soft: #6E6359;
+  --t-ink-faint: #9E9388;
+  --t-primary: #B49A7E;
+  --t-secondary: #C9B79C;
+  --t-accent: #9C8463;
+  --t-taupe: #8C7B6B;
+  --si-gold: #C2A26A;
+  --si-line: #E2D7C5;
+  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+  --font-calligraphy: 'Great Vibes', 'Dancing Script', cursive;
+  --font-be-vietnam: 'Be Vietnam Pro', system-ui, sans-serif;
+}
+
+body {
+  color: var(--t-ink);
+  background-color: var(--t-bg);
+  font-family: var(--font-be-vietnam);
+}
+
+.si-display {
+  font-family: var(--font-cormorant);
+}
+
+.font-calligraphy {
+  font-family: var(--font-calligraphy);
+}
+
+.si-gold-text {
+  color: #9C8463;
+}
+
+@keyframes glint-fall {
+  0% {
+    transform: translateY(-5vh) translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) translateX(var(--si-drift, 20px));
+    opacity: 0;
+  }
+}
+
+.si-glint-fall {
+  position: absolute;
+  top: -5%;
+  animation-name: glint-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shine {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shine {
+  animation: shine 1.8s infinite;
+}
+
+.si-rule--foil {
+  background: linear-gradient(90deg, transparent, var(--t-primary), transparent);
+}
