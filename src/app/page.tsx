@@ -158,9 +158,9 @@ function WeddingCardContent() {
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { duration: 0.7, ease: "easeInOut" } 
+      transition: { duration: 0.7, ease: "easeInOut" as const } 
     }
-  };
+  } as const;
 
   // Cấu hình hiệu ứng xuất hiện lần lượt từng phần tử con (stagger)
   const staggerContainer = {
