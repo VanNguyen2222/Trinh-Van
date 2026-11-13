@@ -7,7 +7,7 @@ import SeoulGlints from '@/components/SeoulGlints';
 import MusicPlayer from '@/components/MusicPlayer';
 import WeddingGiftModal from '@/components/WeddingGiftModal';
 import WeddingCalendar from '@/components/WeddingCalendar';
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import WeddingCountdown from '@/components/WeddingCountdown';
 
 interface HeartItem {
@@ -153,14 +153,14 @@ function WeddingCardContent() {
   mapUrl.searchParams.append("query", weddingData.events.groomParty.address);
 
   // Cấu hình hiệu ứng trượt lên nhẹ nhàng cho toàn trang
-  const fadeInUp = {
+  const fadeInUp : Variants = {
     hidden: { opacity: 0, y: 28 },
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { duration: 0.7, ease: "easeInOut" as const } 
+      transition: { duration: 0.7, ease: "easeInOut" } 
     }
-  } as const;
+  };
 
   // Cấu hình hiệu ứng xuất hiện lần lượt từng phần tử con (stagger)
   const staggerContainer = {
