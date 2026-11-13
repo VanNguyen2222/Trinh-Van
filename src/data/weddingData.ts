@@ -3,12 +3,12 @@ export const weddingData = {
     groom: {
       fullName: "Võ Quốc Trịnh",
       shortName: "Quốc Trịnh",
-      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
+      photo: "/images/1Q9A1295.JPG",
     },
     bride: {
       fullName: "Nguyễn Thị Vân",
       shortName: "Thị Vân",
-      photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
+      photo: "/images/1Q9A1295.JPG",
     },
     hashtag: "TrinhVanForever",
   },
@@ -74,11 +74,11 @@ export const weddingData = {
     }
   ],
   album: [
-    { src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop", alt: "Ảnh cưới 1" },
-    { src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop", alt: "Ảnh cưới 2" },
-    { src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop", alt: "Ảnh cưới 3" },
-    { src: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=800&auto=format&fit=crop", alt: "Ảnh cưới 4" },
-    { src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop", alt: "Ảnh cưới 5" },
-    { src: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800&auto=format&fit=crop", alt: "Ảnh cưới 6" },
+    { src: "/images/1Q9A1295.JPG", alt: "Ảnh cưới 1" },
+    { src: "/images/1Q9A1295.JPG", alt: "Ảnh cưới 2" },
+    { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 3" },
+    { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 4" },
+    { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 5" },
+    { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 6" },
   ]
 };
