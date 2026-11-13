@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function WeddingCountdown({ targetDate = "2026-12-12T11:00:00+07:00" }: { targetDate?: string }) {
@@ -47,7 +47,7 @@ export default function WeddingCountdown({ targetDate = "2026-12-12T11:00:00+07:
     { label: "GIÂY", value: mounted ? formatNumber(timeLeft.seconds) : "00" },
   ];
 
-  const fadeInUp = {
+  const fadeInUp : Variants = {
     hidden: { opacity: 0, y: 28 },
     visible: { 
       opacity: 1, 
