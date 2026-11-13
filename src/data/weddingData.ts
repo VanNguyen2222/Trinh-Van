@@ -55,7 +55,7 @@ export const weddingData = {
     }
   },
   music: {
-    src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-wedding-113543.mp3",
+    src: "/audio/nhac.mp3",
   },
   gifts: [
     {
