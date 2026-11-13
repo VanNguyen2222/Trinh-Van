@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 interface BankInfo {
   role: string;
@@ -33,23 +34,72 @@ export default function WeddingGiftModal({
   return (
     <>
       {/* Nút bấm dạng hình ảnh (Hộp quà / Phong bì mừng cưới) */}
-      <button
+      <motion.button
         type="button"
-        onClick={() => setIsOpen(true)}
-        className="group relative inline-flex flex-col items-center focus:outline-none cursor-pointer"
-        aria-label="Mở hộp mừng cưới"
+        onClick={() => setIsOpen(true)} // Giữ đúng tên hàm mở modal hiện tại của bạn
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
+        className="group relative mx-auto flex w-60 flex-col items-center overflow-hidden rounded-2xl border border-[#C2A26A]/50 bg-[#FBF8F2] px-6 pt-6 pb-5 shadow-[0_10px_30px_rgba(110,14,18,0.08)] transition-colors duration-300 hover:border-[#6e0e12]/60 hover:shadow-[0_15px_35px_rgba(110,14,18,0.16)] cursor-pointer"
       >
-        <div className="overflow-hidden rounded-2xl shadow-md transition-transform duration-300 group-hover:scale-105 group-active:scale-95">
+        {/* Đường viền mảnh trang trí bên trong */}
+        <div className="pointer-events-none absolute inset-1.5 rounded-xl border border-[#C2A26A]/25" />
+
+        {/* Hiệu ứng vệt sáng lướt nhẹ qua thẻ định kỳ */}
+        <motion.div
+          aria-hidden="true"
+          initial={{ x: "-150%" }}
+          animate={{ x: "250%" }}
+          transition={{
+            duration: 1.4,
+            repeat: Infinity,
+            repeatDelay: 2.6,
+            ease: "easeInOut",
+          }}
+          className="pointer-events-none absolute inset-0 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-[#C2A26A]/20 to-transparent"
+        />
+
+        {/* Ảnh phong bì lắc nhẹ nhàng liên tục theo nhịp */}
+        <motion.div
+          animate={{
+            rotate: Array(0, -4, 4, -3, 3, 0),
+            y: Array(0, -3, 0, -2, 0, 0),
+          }}
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            repeatDelay: 1.8,
+            ease: "easeInOut",
+          }}
+          className="relative z-10 flex items-center justify-center"
+        >
           <img
             src={buttonImageUrl}
-            alt="Hộp mừng cưới"
-            className="w-36 h-36 object-cover"
+            alt="Gửi mừng cưới"
+            className="h-28 w-auto object-contain mix-blend-multiply drop-shadow-md transition-transform duration-300 group-hover:scale-105"
           />
+        </motion.div>
+
+        {/* Đường kẻ mảnh ngăn cách kèm điểm nhấn hình thoi */}
+        <div className="relative z-10 my-3.5 flex items-center justify-center gap-2">
+          <span className="h-px w-8 bg-[#C2A26A]/50" />
+          <span className="h-1 w-1 rotate-45 bg-[#6e0e12]" />
+          <span className="h-px w-8 bg-[#C2A26A]/50" />
         </div>
-        <span className="mt-2 text-sm font-medium text-rose-700 group-hover:text-rose-800">
-          Gửi mừng cưới
+
+        {/* Tiêu đề đồng bộ font Serif & màu đỏ đô */}
+        <span className="si-display relative z-10 text-xl font-medium tracking-wide text-[#6e0e12]">
+          Gửi Mừng Cưới
         </span>
-      </button>
+
+        {/* Dòng gợi ý nhỏ có nhịp mờ tỏ nhẹ */}
+        <motion.span
+          animate={{ opacity: Array(0.6, 1, 0.6) }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          className="relative z-10 mt-1 text-[0.68rem] uppercase tracking-[0.18em] text-[#6e0e12]/80"
+        >
+          Chạm để mở thiệp mừng
+        </motion.span>
+      </motion.button>
 
       {/* Modal hiển thị mã QR */}
       {isOpen && (

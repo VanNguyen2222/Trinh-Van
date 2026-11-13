@@ -80,5 +80,7 @@ export const weddingData = {
     { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 4" },
     { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 5" },
     { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 6" },
+    { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 6" },
+    { src: "images/1Q9A1295.JPG", alt: "Ảnh cưới 6" },
   ]
 };

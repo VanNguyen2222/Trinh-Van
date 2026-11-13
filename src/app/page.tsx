@@ -6,7 +6,9 @@ import { weddingData } from '@/data/weddingData';
 import SeoulGlints from '@/components/SeoulGlints';
 import MusicPlayer from '@/components/MusicPlayer';
 import WeddingGiftModal from '@/components/WeddingGiftModal';
+import WeddingCalendar from '@/components/WeddingCalendar';
 import { motion, AnimatePresence } from "framer-motion";
+import WeddingCountdown from '@/components/WeddingCountdown';
 
 interface HeartItem {
   id: number;
@@ -56,31 +58,81 @@ function WeddingCardContent() {
   const handleGuestbookSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!guestbookName.trim() || !wishes.trim()) return;
-    setGuestbook([
-      { name: guestbookName, content: wishes, time: new Date().toLocaleString('vi-VN') },
-      ...guestbook,
+
+    // 1. Lưu tạm dữ liệu khách vừa nhập
+    const currentName = guestbookName.trim();
+    const currentWishes = wishes.trim();
+    const currentTime = new Date().toISOString();
+
+    // 2. Hiển thị ngay lập tức lên giao diện + bắn tim (0 giây chờ đợi)
+    setGuestbook((prev) => [
+      { name: currentName, content: currentWishes, time: currentTime },
+      ...prev,
     ]);
-    setGuestbookName('');
-    setWishes('');
-    alert('Cảm ơn bạn đã gửi lời chúc ý nghĩa!');
-    triggerHearts(); 
+    setGuestbookName("");
+    setWishes("");
+    triggerHearts();
+
+    // 3. Gửi âm thầm lên Google Sheets ở chế độ nền (không dùng await chặn giao diện)
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors", // Bỏ qua bước kiểm tra CORS preflight giúp gửi nhanh hơn
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify({
+        type: "guestbook",
+        name: currentName,
+        content: currentWishes,
+      }),
+    }).catch((error) => {
+      console.error("Lỗi lưu lời chúc ngầm:", error);
+    });
   };
+
 
   const handleRsvpSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rsvpStatus) return;
+    if (!rsvpStatus || !rsvpName.trim()) return;
+
+    const currentName = rsvpName.trim();
+    const currentStatus = rsvpStatus;
+
+    // 1. Chuyển sang màn hình cảm ơn + bắn tim ngay lập tức
     setRsvpSubmitted(true);
-    triggerHearts(); 
+    triggerHearts();
+
+    // 2. Gửi dữ liệu âm thầm lên Google Sheets
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify({
+        type: "rsvp",
+        name: currentName,
+        status: currentStatus,
+      }),
+    }).catch((error) => {
+      console.error("Lỗi lưu RSVP ngầm:", error);
+    });
   };
 
+  // Chuyển sang ảnh tiếp theo (8/8 -> 1/8)
   const nextPhoto = useCallback(() => {
-    setSelectedIndex((prev) => (prev !== null ? (prev + 1) % album.length : null));
+    setSelectedIndex((prev) => {
+      if (prev === null || album.length === 0) return null;
+      return (prev + 1) % album.length;
+    });
   }, [album.length]);
 
+  // Quay lại ảnh trước đó (1/8 -> 8/8)
   const prevPhoto = useCallback(() => {
-    setSelectedIndex((prev) =>
-      prev !== null ? (prev - 1 + album.length) % album.length : null
-    );
+    setSelectedIndex((prev) => {
+      if (prev === null || album.length === 0) return null;
+      return (prev - 1 + album.length) % album.length;
+    });
   }, [album.length]);
 
   useEffect(() => {
@@ -123,32 +175,91 @@ function WeddingCardContent() {
   const [hearts, setHearts] = useState<HeartItem[]>([]);
 
   const triggerHearts = () => {
-  const totalHearts = 24; // Số lượng tim rải đều khắp trang
-  const newHearts: HeartItem[] = Array.from({ length: totalHearts }).map((_, i) => {
-    // Chia đều chiều ngang thành các làn, cộng thêm độ lệch nhỏ cho tự nhiên
-    const laneWidth = 92 / totalHearts;
-    const left = 4 + i * laneWidth + (Math.random() * laneWidth * 0.6);
+    const totalHearts = 24; // Số lượng tim rải đều khắp trang
+    const newHearts: HeartItem[] = Array.from({ length: totalHearts }).map((_, i) => {
+      // Chia đều chiều ngang thành các làn, cộng thêm độ lệch nhỏ cho tự nhiên
+      const laneWidth = 92 / totalHearts;
+      const left = 4 + i * laneWidth + (Math.random() * laneWidth * 0.6);
 
-    return {
-      id: Date.now() + i,
-      left,
-      size: Math.random() * 14 + 16, // Kích thước 16px - 30px
-      delay: Math.random() * 0.8, // Xuất hiện rải rác trong 0.8s đầu
-      duration: Math.random() * 1.5 + 2.8, // Bay lên trong 2.8s - 4.3s
-      sway: (Math.random() - 0.5) * 60, // Lắc nhẹ sang trái/phải khi bay
-    };
-  });
+      return {
+        id: Date.now() + i,
+        left,
+        size: Math.random() * 14 + 16, // Kích thước 16px - 30px
+        delay: Math.random() * 0.8, // Xuất hiện rải rác trong 0.8s đầu
+        duration: Math.random() * 1.5 + 2.8, // Bay lên trong 2.8s - 4.3s
+        sway: (Math.random() - 0.5) * 60, // Lắc nhẹ sang trái/phải khi bay
+      };
+    });
 
-  setHearts((prev) => [...prev, ...newHearts]);
+    setHearts((prev) => [...prev, ...newHearts]);
 
-  // Tự động dọn dẹp sau 5.2 giây (khi tất cả tim đã bay hết lên trên)
-  setTimeout(() => {
-    setHearts((prev) => prev.filter((h) => !newHearts.some((nh) => nh.id === h.id)));
-  }, 5200);
-};
+    // Tự động dọn dẹp sau 5.2 giây (khi tất cả tim đã bay hết lên trên)
+    setTimeout(() => {
+      setHearts((prev) => prev.filter((h) => !newHearts.some((nh) => nh.id === h.id)));
+    }, 5200);
+  };
 
-  console.log("hearts",hearts);
-  
+  // 1. Dán đường link Web App URL bạn vừa copy vào đây
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL-CUuTK8Ld0NBjo5VdJ5pxilOnjay8U6kMPKQNrOUS5A1I-hfJf8CEWJIz8YhjusOrw/exec";
+
+  // 2. Thêm state quản lý trạng thái đang gửi (tránh khách bấm nhiều lần)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [rsvpName, setRsvpName] = useState(guestName !== 'Quý Khách' ? guestName : '');
+
+  // 3. Tự động tải toàn bộ lời chúc của mọi người khi mở trang
+  useEffect(() => {
+    fetch(GOOGLE_SCRIPT_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setGuestbook(data);
+        }
+      })
+      .catch((err) => console.error("Lỗi tải sổ lưu bút:", err));
+  }, []);
+
+  const formatVietnamTime = (dateString: string) => {
+    if (!dateString) return "";
+    
+    const date = new Date(dateString);
+    // Nếu dữ liệu đã là chuỗi text bình thường thì giữ nguyên
+    if (isNaN(date.getTime())) return dateString;
+
+    return new Intl.DateTimeFormat("vi-VN", {
+      timeZone: "Asia/Ho_Chi_Minh",
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(date);
+  };
+
+  const [wishSlideIndex, setWishSlideIndex] = useState(0);
+  const [isPausedSlide, setIsPausedSlide] = useState(false);
+
+  // Tự động chuyển sang lời chúc tiếp theo sau mỗi 4.5 giây
+  useEffect(() => {
+    if (guestbook.length <= 1 || isPausedSlide) return;
+
+    const timer = setInterval(() => {
+      setWishSlideIndex((prev) => (prev + 1) % guestbook.length);
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, [guestbook.length, isPausedSlide]);
+
+  // Khi có lời chúc mới được gửi lên, tự động nhảy về slide đầu tiên (mới nhất)
+  const handlePrevWish = () => {
+    setWishSlideIndex((prev) => (prev - 1 + guestbook.length) % guestbook.length);
+  };
+
+  const handleNextWish = () => {
+    setWishSlideIndex((prev) => (prev + 1) % guestbook.length);
+  };
+
+  const INITIAL_PHOTO_COUNT = 6;
+  const previewAlbum = album.slice(0, INITIAL_PHOTO_COUNT);
 
   return (
     <main className="relative min-h-screen w-full bg-[#FBF8F2] overflow-x-hidden">
@@ -239,14 +350,19 @@ function WeddingCardContent() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
-            className="mb-9 flex items-end gap-4 sm:gap-5"
+            className="mb-14 text-center"
           >
-            <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">01</span>
-            <div className="pb-1">
-              <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#000]">GROOM &amp; BRIDE</p>
-              <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Chú Rể &amp; Cô Dâu</h2>
+            <p className="text-[0.7rem] font-medium uppercase tracking-[0.28em] text-[#6e0e12]/70">
+              GROOM &amp; BRIDE
+            </p>
+            <h2 className="si-display mt-2 text-[2.1rem] font-medium text-[#6e0e12] sm:text-[2.5rem]">
+              Chú Rể &amp; Cô Dâu
+            </h2>
+            <div className="mt-4 flex items-center justify-center gap-3">
+              <span className="h-px w-12 bg-[#6e0e12]/40" />
+              <span className="h-1.5 w-1.5 rotate-45 bg-[#6e0e12]" />
+              <span className="h-px w-12 bg-[#6e0e12]/40" />
             </div>
-            <span className="h-px flex-1 bg-[#6e0e12]/70 mb-2" />
           </motion.div>
 
           <div className="mx-auto mt-8 flex flex-col gap-12 sm:gap-16">
@@ -269,7 +385,7 @@ function WeddingCardContent() {
               </div>
               <div className="flex-1 text-left">
                 <p className="text-[0.7rem] uppercase tracking-widest text-[#000]">CHÚ RỂ</p>
-                <h3 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">
+                <h3 className="si-display text-[1.6rem] font-medium text-[#6e0e12]">
                   {weddingData.couple.groom.fullName}
                 </h3>
                 <p className="mt-2 text-xs italic text-[#000] leading-relaxed">
@@ -297,7 +413,7 @@ function WeddingCardContent() {
               </div>
               <div className="flex-1 text-right">
                 <p className="text-[0.7rem] uppercase tracking-widest text-[#000]">CÔ DÂU</p>
-                <h3 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">
+                <h3 className="si-display text-[1.6rem] font-medium text-[#6e0e12]">
                   {weddingData.couple.bride.fullName}
                 </h3>
                 <p className="mt-2 text-xs italic text-[#000] leading-relaxed">
@@ -315,14 +431,19 @@ function WeddingCardContent() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
-            className="mb-9 flex items-end gap-4 sm:gap-5"
+            className="mb-12 text-center"
           >
-            <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">02</span>
-            <div className="pb-1">
-              <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#000]">PARENTS</p>
-              <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Hai Bên Gia Đình</h2>
+            <p className="text-[0.7rem] font-medium uppercase tracking-[0.28em] text-[#6e0e12]/70">
+              OUR FAMILIES
+            </p>
+            <h2 className="si-display mt-2 text-[2.1rem] font-medium text-[#6e0e12] sm:text-[2.4rem]">
+              Hai Bên Gia Đình
+            </h2>
+            <div className="mt-4 flex items-center justify-center gap-3">
+              <span className="h-px w-12 bg-[#6e0e12]/40" />
+              <span className="h-1.5 w-1.5 rotate-45 bg-[#6e0e12]" />
+              <span className="h-px w-12 bg-[#6e0e12]/40" />
             </div>
-            <span className="h-px flex-1 bg-[#6e0e12] mb-2" />
           </motion.div>
 
           <motion.div
@@ -334,7 +455,8 @@ function WeddingCardContent() {
           >
             <motion.div variants={fadeInUp} className="border-r border-[#C9B79C]/50 pr-3">
               <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#000]">Nhà Trai</p>
-              <div className="mt-4 space-y-1">
+              <span className="inline-block h-px w-12 bg-[#6e0e12]/40" />
+              <div className="mt-2 space-y-1">
                 <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.groom.fatherName}</p>
                 <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.groom.motherName}</p>
               </div>
@@ -343,7 +465,8 @@ function WeddingCardContent() {
 
             <motion.div variants={fadeInUp} className="pl-3">
               <p className="text-[0.64rem] uppercase tracking-[0.26em] text-[#000]">Nhà Gái</p>
-              <div className="mt-4 space-y-1">
+              <span className="inline-block h-px w-12 bg-[#6e0e12]/40" />
+              <div className="mt-2 space-y-1">
                 <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.bride.fatherName}</p>
                 <p className="si-display text-[1.2rem] font-medium text-[#6e0e12]">{weddingData.families.bride.motherName}</p>
               </div>
@@ -421,99 +544,78 @@ function WeddingCardContent() {
             </motion.div>
           </section>
 
-          {/* SECTION TIỆC */}
-          <section className="relative overflow-hidden bg-[#F1EADD] px-6 py-16 text-center sm:py-20">
-            {/* Họa tiết Mái Vòm */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.25 }}
-              variants={staggerContainer}
-              >
-              {/* Họa tiết Mái Vòm */}
-              <motion.div variants={fadeInUp} className="flex justify-center text-[#6e0e12]" aria-hidden="true">
-                <svg width="100" height="24" viewBox="0 0 100 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
-                  <path d="M 10 22 Q 50 -2, 90 22" />
-                  <path d="M 22 22 Q 50 6, 78 22" />
-                  <polygon points="50,2 53,6 50,10 47,6" fill="currentColor" />
-                </svg>
-              </motion.div>
-
-            
-              <motion.div variants={fadeInUp} className="mt-4">
-                <p className="text-[0.88rem] uppercase tracking-[0.22em] text-[#6e0e12] sm:text-[0.74rem]">
-                  TRÂN TRỌNG KÍNH MỜI <span className="font-semibold text-[#6e0e12]">{guestName.toUpperCase()}</span> ĐẾN THAM DỰ:
-                </p>
-                <p className="text-[0.66rem] uppercase tracking-[0.2em] text-[#6e0e12] sm:text-[0.72rem]">
-                  TIỆC MỪNG LỄ THÀNH HÔN
-                </p>
-                <h3 className="si-display mt-3 text-xl font-semibold uppercase tracking-wider text-[#6e0e12] sm:text-2xl">
-                  {weddingData.events.groomParty.venue}
-                </h3>
-                <p className="mt-1 text-sm italic text-[#6e0e12]">{weddingData.events.groomParty.address}</p>
-                <p className="mt-3 text-xs font-semibold tracking-wider text-[#6e0e12]">
-                  VÀO LÚC {weddingData.events.groomParty.time} · {weddingData.events.groomParty.dayOfWeek}
-                </p>
-                <p className="si-display mt-1 text-2xl font-semibold text-[#6e0e12]">{weddingData.events.groomParty.date}</p>
-                <p className="mt-1 text-xs italic text-[#6e0e12]">({weddingData.events.groomParty.lunar})</p>
-                <motion.a
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
-                  href={mapUrl.toString()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#F1EADD] border-[#6e0e12] border-2 font-medium rounded-lg hover:bg-white transition-colors mt-4 text-[#6e0e12] text-sm sm:text-base"
-                  >
-                  {/* Icon bản đồ đơn giản */}
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span>Xem bản đồ</span>
-                </motion.a>
-              </motion.div>
-            </motion.div>
-          </section>
-
           {/* SECTION 04: ALBUM ĐÁM CƯỚI */}
-          <section className="relative overflow-hidden bg-[#FBF8F2] px-5 py-16 sm:px-6 sm:py-24">
+          <section className="relative overflow-hidden bg-[#F1EADD] px-5 py-16 sm:px-6 sm:py-24">
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
               variants={fadeInUp}
-              className="mb-9 flex items-end gap-4 sm:gap-5"
-              >
-                <span className="si-display text-[3.2rem] font-medium leading-none text-[#6e0e12]">03</span>
-                <div className="pb-1">
-                  <p className="text-[0.74rem] uppercase tracking-[0.16em] text-[#000]">GALLERY</p>
-                  <h2 className="si-display text-[1.8rem] font-medium text-[#6e0e12]">Album Kỷ Niệm</h2>
-                </div>
-                <span className="h-px flex-1 bg-[#6e0e12] mb-2" />
+              className="mb-12 text-center"
+            >
+              <p className="text-[0.7rem] font-medium uppercase tracking-[0.28em] text-[#6e0e12]/70">
+                GALLERY
+              </p>
+              <h2 className="si-display mt-2 text-[2.1rem] font-medium text-[#6e0e12] sm:text-[2.4rem]">
+                Album Kỷ Niệm
+              </h2>
+              <div className="mt-4 flex items-center justify-center gap-3">
+                <span className="h-px w-12 bg-[#6e0e12]/40" />
+                <span className="h-1.5 w-1.5 rotate-45 bg-[#6e0e12]" />
+                <span className="h-px w-12 bg-[#6e0e12]/40" />
+              </div>
             </motion.div>
 
-            {/* Lưới ảnh hiện tại của bạn - đã thêm cursor-pointer và onClick */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {album.map((img, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  onClick={() => setSelectedIndex(idx)}
-                  className="cursor-pointer overflow-hidden rounded-lg shadow-sm"
+            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-5">
+              {previewAlbum.map((img, idx) => {
+                const isLastSlot = idx === INITIAL_PHOTO_COUNT - 1 && album.length > INITIAL_PHOTO_COUNT;
+                const remainingCount = album.length - INITIAL_PHOTO_COUNT;
+
+                return (
+                  <motion.div
+                    key={img.src || idx}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
+                    whileHover={{ y: -4 }}
+                    onClick={() => setSelectedIndex(idx)}
+                    className="group relative cursor-pointer overflow-hidden rounded-xl shadow-sm"
                   >
-                  <img
-                    src={img.src}
-                    alt={img.alt}
-                    className="aspect-[3/4] w-full object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                </motion.div>
-              ))}
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      loading="lazy"
+                      className="aspect-[3/4] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+
+                    {isLastSlot ? (
+                      /* Lớp phủ thông báo số ảnh còn lại, bấm vào sẽ mở Lightbox tại ảnh này */
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/55 backdrop-blur-[2px] transition-colors duration-300 group-hover:bg-black/65">
+                        <span className="si-display text-3xl font-semibold text-[#FBF8F2] sm:text-4xl">
+                          +{remainingCount}
+                        </span>
+                        <span className="mt-1.5 text-[0.68rem] uppercase tracking-[0.22em] text-[#FBF8F2]/90">
+                          Xem tất cả ảnh
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/15" />
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
 
+
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="font-calligraphy mx-auto mt-8 max-w-md rounded-xl text-center text-[#6e0e12] text-2xl"
+              >
+              Cùng nắm tay nhau bước vào hành trình mới,<br/> nơi tình yêu và những ước mơ cùng nhau đơm hoa kết trái.
+            </motion.div>
             {/* Trình xem từng ảnh phóng to (Lightbox) */}
             <AnimatePresence>
               {selectedIndex !== null && (
@@ -557,12 +659,13 @@ function WeddingCardContent() {
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.6}
                     onDragEnd={(_, info) => {
-                      // Vuốt sang trái quá 50px -> Ảnh tiếp theo
-                      if (info.offset.x < -50) {
+                      const swipeThreshold = 40;
+                      // Vuốt sang trái hoặc hất tay nhanh sang trái -> Tiến ảnh (8/8 -> 1/8)
+                      if (info.offset.x < -swipeThreshold || info.velocity.x < -300) {
                         nextPhoto();
                       } 
-                      // Vuốt sang phải quá 50px -> Ảnh trước đó
-                      else if (info.offset.x > 50) {
+                      // Vuốt sang phải hoặc hất tay nhanh sang phải -> Lùi ảnh (1/8 -> 8/8)
+                      else if (info.offset.x > swipeThreshold || info.velocity.x > 300) {
                         prevPhoto();
                       }
                     }}
@@ -610,19 +713,85 @@ function WeddingCardContent() {
 
           </section>
 
-          {/* SECTION 05: SỔ LƯU BÚT */}
-          <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-24">
+          {/* SECTION TIỆC */}
+          <section className="relative overflow-hidden bg-[#FBF8F2] px-6 py-16 text-center sm:py-20">
+            {/* Họa tiết Mái Vòm */}
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.25 }}
-              variants={fadeInUp}
-              className="text-center"
+              variants={staggerContainer}
               >
-              <h2 className="si-display text-[2rem] font-medium text-[#6e0e12]">Sổ Lưu Bút</h2>
+              {/* Họa tiết Mái Vòm */}
+              <motion.div variants={fadeInUp} className="flex justify-center text-[#6e0e12]" aria-hidden="true">
+                <svg width="100" height="24" viewBox="0 0 100 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+                  <path d="M 10 22 Q 50 -2, 90 22" />
+                  <path d="M 22 22 Q 50 6, 78 22" />
+                  <polygon points="50,2 53,6 50,10 47,6" fill="currentColor" />
+                </svg>
+              </motion.div>
+
+            
+              <motion.div variants={fadeInUp} className="mt-4">
+                <p className="text-[0.88rem] uppercase tracking-[0.22em] text-[#6e0e12] sm:text-[0.74rem]">
+                  TRÂN TRỌNG KÍNH MỜI <span className="font-semibold text-[#6e0e12]">{guestName.toUpperCase()}</span> ĐẾN THAM DỰ:
+                </p>
+                <p className="text-[0.66rem] uppercase tracking-[0.2em] text-[#6e0e12] sm:text-[0.72rem]">
+                  TIỆC MỪNG LỄ THÀNH HÔN
+                </p>
+                <h3 className="si-display mt-3 text-xl font-semibold uppercase tracking-wider text-[#6e0e12] sm:text-2xl">
+                  {weddingData.events.groomParty.venue}
+                </h3>
+                <p className="mt-1 text-sm italic text-[#6e0e12]">{weddingData.events.groomParty.address}</p>
+                <p className="mt-3 text-xs font-semibold tracking-wider text-[#6e0e12]">
+                  VÀO LÚC {weddingData.events.groomParty.time} · {weddingData.events.groomParty.dayOfWeek}
+                </p>
+                <p className="si-display mt-1 text-2xl font-semibold text-[#6e0e12]">{weddingData.events.groomParty.date}</p>
+                <p className="mt-1 text-xs italic text-[#6e0e12]">({weddingData.events.groomParty.lunar})</p>
+                <WeddingCountdown targetDate="2026-12-12T11:00:00+07:00" />
+                <WeddingCalendar highlightDay={12} />
+                <motion.a
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  href={mapUrl.toString()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#F1EADD] border-[#6e0e12] border-2 font-medium rounded-lg hover:bg-white transition-colors mt-4 text-[#6e0e12] text-sm sm:text-base"
+                  >
+                  {/* Icon bản đồ đơn giản */}
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Xem bản đồ</span>
+                </motion.a>
+              </motion.div>
+            </motion.div>
+          </section>
+
+          {/* SECTION 05: SỔ LƯU BÚT */}
+          <section className="relative overflow-hidden bg-[#F1EADD] px-5 py-16 sm:px-6 sm:py-24">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUp}
+              className="mb-12 text-center"
+            >
+              <p className="text-[0.7rem] font-medium uppercase tracking-[0.28em] text-[#6e0e12]/70">
+                WISHES
+              </p>
+              <h2 className="si-display mt-2 text-[2.1rem] font-medium text-[#6e0e12] sm:text-[2.4rem]">
+                Sổ Lưu Bút
+              </h2>
               <p className="mt-1 text-sm italic text-[#000]">
                 Gửi những lời chúc tốt đẹp nhất dành cho cặp đôi
               </p>
+              <div className="mt-4 flex items-center justify-center gap-3">
+                <span className="h-px w-12 bg-[#6e0e12]/40" />
+                <span className="h-1.5 w-1.5 rotate-45 bg-[#6e0e12]" />
+                <span className="h-px w-12 bg-[#6e0e12]/40" />
+              </div>
             </motion.div>
 
             <motion.form
@@ -659,27 +828,111 @@ function WeddingCardContent() {
               </motion.button>
             </motion.form>
 
-            <div className="mx-auto mt-10 max-w-md space-y-3">
-              {guestbook.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="rounded-lg bg-[#F1EADD]/60 p-4 shadow-sm"
+            {/* SLIDE HIỂN THỊ LỜI CHÚC */}
+            {guestbook.length > 0 && (
+              <div
+                onMouseEnter={() => setIsPausedSlide(true)}
+                onMouseLeave={() => setIsPausedSlide(false)}
+                onTouchStart={() => setIsPausedSlide(true)}
+                onTouchEnd={() => setIsPausedSlide(false)}
+                className="relative mt-10 max-w-md mx-auto"
+              >
+                {/* Khung thẻ lời chúc chính */}
+                <div className="relative overflow-hidden rounded-2xl border border-[#C2A26A]/45 bg-white/95 px-7 py-8 text-center shadow-sm sm:px-10">
+                  {/* Họa tiết dấu ngoặc kép lớn làm nền */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-2 left-4 font-serif text-6xl leading-none text-[#6e0e12]/10 select-none"
                   >
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold text-[#000]">{item.name}</p>
-                    <span className="text-[0.7rem] text-[#000]">{item.time}</span>
+                    &ldquo;
+                  </span>
+
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={wishSlideIndex}
+                      initial={{ opacity: 0, x: 24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -24 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={0.4}
+                      onDragEnd={(_, info) => {
+                        if (info.offset.x < -40) handleNextWish();
+                        else if (info.offset.x > 40) handlePrevWish();
+                      }}
+                      className="cursor-grab active:cursor-grabbing select-none"
+                    >
+                      {/* Nội dung lời chúc */}
+                      <p className="min-h-[72px] flex items-center justify-center text-sm italic leading-relaxed text-[#28221E]/90 sm:text-base">
+                        &quot;{guestbook[wishSlideIndex]?.content}&quot;
+                      </p>
+
+                      {/* Đường gạch mảnh trang trí */}
+                      <div className="mx-auto my-4 h-px w-12 bg-[#C2A26A]/50" />
+
+                      {/* Tên người gửi & Thời gian */}
+                      <p className="si-display text-lg font-semibold text-[#6e0e12]">
+                        {guestbook[wishSlideIndex]?.name}
+                      </p>
+                      <p className="mt-0.5 text-[0.68rem] tracking-wider text-[#28221E]/55">
+                        {formatVietnamTime(guestbook[wishSlideIndex]?.time)}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {/* Hai nút điều hướng trái / phải */}
+                  {guestbook.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={handlePrevWish}
+                        aria-label="Lời chúc trước"
+                        className="absolute top-1/2 left-2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full text-xs text-[#6e0e12]/60 transition hover:bg-[#F1EADD] hover:text-[#6e0e12]"
+                      >
+                        ❮
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleNextWish}
+                        aria-label="Lời chúc tiếp theo"
+                        className="absolute top-1/2 right-2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full text-xs text-[#6e0e12]/60 transition hover:bg-[#F1EADD] hover:text-[#6e0e12]"
+                      >
+                        ❯
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* Thanh chấm tròn chỉ báo vị trí slide */}
+                {guestbook.length > 1 && (
+                  <div className="mt-4 flex items-center justify-center gap-1.5">
+                    {guestbook.slice(0, 10).map((_, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setWishSlideIndex(idx)}
+                        aria-label={`Xem lời chúc ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          wishSlideIndex === idx
+                            ? "w-5 bg-[#6e0e12]"
+                            : "w-1.5 bg-[#6e0e12]/25 hover:bg-[#6e0e12]/50"
+                        }`}
+                      />
+                    ))}
+                    {guestbook.length > 10 && (
+                      <span className="ml-1 text-[0.65rem] text-[#6e0e12]/60">
+                        +{guestbook.length - 10}
+                      </span>
+                    )}
                   </div>
-                  <p className="mt-2 text-sm italic text-[#000]">"{item.content}"</p>
-                </motion.div>
-              ))}
-            </div>
+                )}
+              </div>
+            )}
           </section>
 
-          {/* SECTION 06: MỪNG CƯỚI */}
-          <section className="relative overflow-hidden bg-[#F1EADD] px-5 py-16 sm:px-6 sm:py-24">
+          {/* SECTION: HỘP MỪNG CƯỚI */}
+          <section className="relative overflow-hidden bg-[#FBF8F2] px-5 py-16 sm:px-6 sm:py-24">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -688,7 +941,7 @@ function WeddingCardContent() {
               className="text-center"
               >
               <WeddingGiftModal
-                buttonImageUrl="/images/gift-box.png"
+                buttonImageUrl="/images/asset-14.png"
                 groomBank={{
                   role: (weddingData.gifts[0].title),
                   name: (weddingData.gifts[0].accountName),
@@ -705,29 +958,39 @@ function WeddingCardContent() {
                 }}
               />
             </motion.div>
-            
           </section>
 
           {/* SECTION 07: RSVP */}
-          <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-24">
+          <section className="relative overflow-hidden bg-[#F1EADD] px-5 py-16 sm:px-6 sm:py-24">
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.25 }}
+              viewport={{ once: true, amount: 0.3 }}
               variants={fadeInUp}
-              className="text-center"
-              >
-              <h2 className="si-display text-[2rem] font-medium text-[#6e0e12]">Xác Nhận Tham Dự</h2>
-              <p className="mt-1 text-sm italic text-[#000]">Vui lòng phản hồi trước ngày 10/12/2026</p>
+              className="mb-12 text-center"
+            >
+              <p className="text-[0.7rem] font-medium uppercase tracking-[0.28em] text-[#6e0e12]/70">
+                R.S.V.P
+              </p>
+              <h2 className="si-display mt-2 text-[2.1rem] font-medium text-[#6e0e12] sm:text-[2.4rem]">
+                Xác Nhận Tham Dự
+              </h2>
+              <p className="mt-1 text-sm italic text-[#000]">Vui lòng xác nhận sự tham dự của bạn để chúng mình chuẩn bị đón tiếp một cách chu đáo nhất.</p>
+              <p className="mt-1 text-sm italic text-[#000]">Trân trọng cảm ơn!</p>
+              <div className="mt-4 flex items-center justify-center gap-3">
+                <span className="h-px w-12 bg-[#6e0e12]/40" />
+                <span className="h-1.5 w-1.5 rotate-45 bg-[#6e0e12]" />
+                <span className="h-px w-12 bg-[#6e0e12]/40" />
+              </div>
             </motion.div>
 
             {rsvpSubmitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mx-auto mt-8 max-w-md rounded-xl bg-green-50 p-6 text-center text-green-800"
+                className="font-calligraphy mx-auto mt-8 max-w-md rounded-xl p-6 text-center text-[#6e0e12] text-2xl"
                 >
-                Cảm ơn bạn đã phản hồi! Gia đình rất hân hạnh được đón tiếp.
+                Cảm ơn bạn đã phản hồi!<br/> Gia đình rất hân hạnh được đón tiếp.
               </motion.div>
             ) : (
               <motion.form
@@ -741,7 +1004,8 @@ function WeddingCardContent() {
                 <input
                   type="text"
                   placeholder="Họ và tên quý khách"
-                  defaultValue={guestName !== 'Quý Khách' ? guestName : ''}
+                  value={rsvpName}
+                  onChange={(e) => setRsvpName(e.target.value)}
                   className="w-full rounded-lg border border-[#B49A7E]/40 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#6e0e12]"
                   required
                 />
@@ -777,7 +1041,7 @@ function WeddingCardContent() {
           </section>
 
           {/* Footer */}
-          <footer className="bg-[#F1EADD] py-12 text-center">
+          <footer className="bg-[#FBF8F2] py-12 text-center">
             <motion.div
               initial="hidden"
               whileInView="visible"
